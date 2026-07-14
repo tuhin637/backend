@@ -21,9 +21,9 @@ export class ReportService {
       .groupBy('e.id', 'e.name')
       .select('e.id as employee_id', 'e.name')
       .count('a.id as days_present')
-      .sum(
-        db.raw("CASE WHEN a.check_in_time > '09:45:00' THEN 1 ELSE 0 END as times_late"),
-      );
+      .sum({
+        times_late: db.raw("CASE WHEN a.check_in_time > '09:45:00' THEN 1 ELSE 0 END"),
+      });
 
     if (employeeId) {
       query.andWhere('e.id', employeeId);
